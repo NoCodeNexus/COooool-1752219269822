@@ -1,0 +1,296 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Tic Tac Toe</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #0ff;
+            overflow: hidden;
+        }
+
+        /* Neon Glow Effect */
+        h1 {
+            text-shadow: 0 0 20px #0ff;
+            animation: neonGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            from {
+                text-shadow: 0 0 10px #0ff;
+            }
+            to {
+                text-shadow: 0 0 20px #0ff, 0 0 30px #0ff;
+            }
+        }
+
+        /* Hamburger Menu Styles */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #0ff;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #0ff;
+            color: #000;
+        }
+
+        .navbar .icon {
+            display: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            .navbar a:not(:first-child) {display: none;}
+            .navbar a.icon {
+                float: right;
+                display: block;
+            }
+            .navbar.responsive {
+                position: relative;
+            }
+            .navbar.responsive .icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+            .navbar.responsive a {
+                float: none;
+                display: block;
+                text-align: left;
+        }
+    }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+            margin: 20px auto;
+            width: 330px;
+            position: relative;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 2px solid #0ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            cursor: pointer;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            animation: cellFadeIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes cellFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cell:hover {
+            background-color: rgba(0, 255, 255, 0.2);
+        }
+
+        #message {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            animation: messageBlink 1s linear infinite;
+        }
+
+        @keyframes messageBlink {
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* Animated Background */
+        @keyframes backgroundAnimation {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        body {
+            background: linear-gradient(270deg, #000000, #000033, #000000);
+            background-size: 600% 600%;
+            animation: backgroundAnimation 30s ease infinite;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #0ff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        #rules {
+            margin-top: 20px;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+            font-size: 1em;
+            text-align: left;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #rules h2 {
+            text-align: center;
+            animation: neonGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        #rules ol {
+            padding-left: 20px;
+        }
+
+        #rules li {
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar" id="myNavbar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            ☰
+        </a>
+    </div>
+
+    <h1>Cyber Tic Tac Toe</h1>
+    
+    <div id="rules">
+        <h2>Game Rules</h2>
+        <ol>
+            <li>The game is played on a 3x3 grid.</li>
+            <li>Two players take turns marking a cell with their symbol (X or O).</li>
+            <li>The first player to get three of their symbols in a row (horizontally, vertically, or diagonally) wins.</li>
+            <li>If all cells are filled and no player has three in a row, the game is a draw.</li>
+            <li>Click on an empty cell to place your symbol.</li>
+        </ol>
+    </div>
+
+    <div class="board" id="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+    <div id="message"></div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2342 Cyberdyne Systems</p>
+    </footer>
+
+    <script>
+        // Hamburger Menu Function
+        function myFunction() {
+            var x = document.getElementById("myNavbar");
+            if (x.className === "navbar") {
+                x.className += " responsive";
+            } else {
+                x.className = "navbar";
+            }
+        }
+
+        let board = ["", "", "", "", "", "", "", "", ""];
+        let currentPlayer = "X";
+        let gameWon = false;
+
+        const boardElement = document.getElementById("board");
+        const messageElement = document.getElementById("message");
+
+        // Initialize Board
+        boardElement.innerHTML = board.map((_, index) => `<div class="cell" data-index="${index}"></div>`).join("");
+
+        // Add click listeners to cells
+        document.querySelectorAll(".cell").forEach(cell => {
+            cell.addEventListener("click", handleCellClick);
+        });
+
+        function handleCellClick(event) {
+            const index = event.target.dataset.index;
+
+            if (board[index] === "" && !gameWon) {
+                board[index] = currentPlayer;
+                event.target.textContent = currentPlayer;
+                checkWin();
+                switchPlayer();
+            }
+        }
+
+        function switchPlayer() {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            messageElement.textContent = `Player ${currentPlayer}'s turn`;
+        }
+
+        function checkWin() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            for (let pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    messageElement.textContent = `Player ${currentPlayer} wins!`;
+                    gameWon = true;
+                    return;
+                }
+            }
+
+            if (!board.includes("")) {
+                messageElement.textContent = "It's a draw!";
+                gameWon = true;
+            }
+        }
+    </script>
+</body>
+</html>
+```
